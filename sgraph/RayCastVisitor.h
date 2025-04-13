@@ -102,6 +102,10 @@ namespace sgraph {
                 glm::vec3 normal = calculateNormalForBox(poi);
                 glm::vec4 viewNormal = glm::inverse(glm::transpose(modelview.top())) * glm::vec4(normal, 0.0f);
 
+                if(minimum < 0.0f) {
+                    return;
+                }
+
                 if (hit.getHit()) {
                     if (hit.getTime() > minimum) {
                         editHit(minimum, viewPoi, viewNormal, mat);
@@ -140,6 +144,9 @@ namespace sgraph {
                 glm::vec4 viewPoi = modelview.top() * glm::vec4(poi, 1.0f);
                 glm::vec3 normal = glm::normalize(poi);
                 glm::vec4 viewNormal = glm::inverse(glm::transpose(modelview.top())) * glm::vec4(normal, 0.0f);
+                if (t < 0.0f ) {
+                    return;
+                }
                 if (hit.getHit()) {
                     if (hit.getTime() > t) {
                         editHit(t, viewPoi, viewNormal, mat);

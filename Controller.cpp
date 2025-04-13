@@ -26,7 +26,7 @@ void Controller::initScenegraph() {
      
     
     //read in the file of commands
-    ifstream inFile("scenegraphmodels/wall.txt");
+    ifstream inFile("scenegraphmodels/simple.txt");
     //ifstream inFile("tryout.txt");
     sgraph::ScenegraphImporter importer;
     
