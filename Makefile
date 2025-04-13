@@ -1,9 +1,9 @@
-OBJS = Homework6.o View.o Controller.o Model.o
+OBJS = Homework7.o View.o Controller.o Model.o
 INCLUDES = -I../include
 LIBS = -L../lib
 LDFLAGS = -lglad -lglfw3
 CFLAGS = -g -std=c++11
-PROGRAM = Homework6
+PROGRAM = Homework7
 
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
@@ -15,11 +15,11 @@ else ifeq ($(shell uname -s),Darwin)     # is MACOSX
 	COMPILER = clang++
 endif
 
-Homework6: $(OBJS)
+Homework7: $(OBJS)
 	$(COMPILER) -o $(PROGRAM) $(OBJS) $(LIBS) $(LDFLAGS)
 
-Homework6.o: Homework6.cpp
-	$(COMPILER) $(INCLUDES) $(CFLAGS) -c Homework6.cpp
+Homework7.o: Homework7.cpp
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c Homework7.cpp
 
 View.o: View.cpp View.h
 	$(COMPILER) $(INCLUDES) $(CFLAGS) -c View.cpp	
