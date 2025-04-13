@@ -1,0 +1,95 @@
+group castle castle
+
+#ground
+
+#lights
+light one-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 0 250 0
+end-light
+
+import foundation scenegraphmodels/base.txt
+add-child foundation castle
+
+assign-light one-light castle
+
+#first wall
+
+translate t-wall-1 t-wall-1 0 40 100
+add-child t-wall-1 castle
+
+import wall-1 scenegraphmodels/wall.txt
+add-child wall-1 t-wall-1
+
+
+#second wall
+
+translate t-wall-2 t-wall-2 0 40 -100
+add-child t-wall-2 castle
+
+import wall-2 scenegraphmodels/wall.txt
+add-child wall-2 t-wall-2
+
+
+#third wall
+
+translate t-wall-3 t-wall-3 100 40 0
+add-child t-wall-3 castle
+
+rotate r-wall-3 r-wall-3 90 0 1 0
+add-child r-wall-3 t-wall-3
+
+import wall-3 scenegraphmodels/wall.txt
+add-child wall-3 r-wall-3
+
+
+#fourth wall
+
+translate t-wall-4 t-wall-4 -100 40 0
+add-child t-wall-4 castle
+
+rotate r-wall-4 r-wall-4 90 0 1 0
+add-child r-wall-4 t-wall-4
+
+import wall-4 scenegraphmodels/wall.txt
+add-child wall-4 r-wall-4
+
+
+#first turret
+
+translate t-turret-1 t-turret-1 100 5 100
+add-child t-turret-1 castle
+
+import turret-1 scenegraphmodels/turret.txt
+add-child turret-1 t-turret-1
+
+
+#second turret
+
+translate t-turret-2 t-turret-2 100 5 -100
+add-child t-turret-2 castle
+
+import turret-2 scenegraphmodels/turret.txt
+add-child turret-2 t-turret-2
+
+
+#third turret
+
+translate t-turret-3 t-turret-3 -100 5 100
+add-child t-turret-3 castle
+
+import turret-3 scenegraphmodels/turret.txt
+add-child turret-3 t-turret-3
+
+
+#fourth turret
+
+translate t-turret-4 t-turret-4 -100 5 -100
+add-child t-turret-4 castle
+
+import turret-4 scenegraphmodels/turret.txt
+add-child turret-4 t-turret-4
+
+assign-root castle

@@ -1,0 +1,24 @@
+#instance
+instance box models/box-outside.obj
+
+#material
+material mat-ground
+emission 0 0 0
+ambient 0 0.3 0
+diffuse 0 0.8 0
+specular 0 0.8 0
+shininess 50
+end-material
+
+image white textures/white.ppm
+
+#the root
+group node-1-0 ground
+scale node-2-0 scale 300 10 300
+leaf node-3-0 one-box instanceof box #comment here?
+assign-material node-3-0 mat-ground
+assign-texture node-3-0 white
+
+add-child node-3-0 node-2-0
+add-child node-2-0 node-1-0
+assign-root node-1-0

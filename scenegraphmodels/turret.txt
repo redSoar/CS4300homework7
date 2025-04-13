@@ -1,0 +1,34 @@
+#instance
+instance box models/box-outside.obj
+
+#material
+material mat-turret
+emission 0 0 0
+ambient 0.3 0 0
+diffuse 0.8 0 0
+specular 0.8 0 0
+shininess 50
+end-material
+
+image white textures/white.ppm
+
+#root
+group turret turret
+
+#tower
+scale s-tower s-tower 24 100 24
+leaf tower tower instanceof box
+assign-material tower mat-turret
+assign-texture tower white
+
+add-child tower s-tower
+add-child s-tower turret
+
+#roof
+translate t-roof t-roof 0 100 0
+add-child t-roof turret
+
+import roof scenegraphmodels/turret-roof.txt
+add-child roof t-roof
+
+assign-root turret

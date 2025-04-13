@@ -1,0 +1,80 @@
+#instance
+instance box models/box-outside.obj
+
+#material
+material mat-turret-roof
+emission 0 0 0
+ambient 0.3 0.3 0.3
+diffuse 0.8 0.8 0.8
+specular 0.8 0.8 0.8
+shininess 50
+end-material
+
+#material
+material mat-turret-notch
+emission 0 0 0
+ambient 0.8 0 0
+diffuse 0.8 0 0
+specular 0.8 0 0
+shininess 50
+end-material
+
+image white textures/white.ppm
+
+#root
+group roof roof
+
+#base
+scale s-base s-base 50 20 50
+leaf base base instanceof box
+assign-material base mat-turret-roof
+assign-texture base white
+
+add-child base s-base
+add-child s-base roof
+
+#first notch
+translate t-notch-1 t-notch-1 20 15 20
+scale s-notch-1 s-notch-1 10 10 10
+leaf notch-1 notch-1 instanceof box
+assign-material notch-1 mat-turret-notch
+assign-texture notch-1 white
+
+add-child notch-1 s-notch-1
+add-child s-notch-1 t-notch-1
+add-child t-notch-1 roof
+
+#second notch
+translate t-notch-2 t-notch-2 -20 15 -20
+scale s-notch-2 s-notch-2 10 10 10
+leaf notch-2 notch-2 instanceof box
+assign-material notch-2 mat-turret-notch
+assign-texture notch-2 white
+
+add-child notch-2 s-notch-2
+add-child s-notch-2 t-notch-2
+add-child t-notch-2 roof
+
+#third notch
+translate t-notch-3 t-notch-3 20 15 -20
+scale s-notch-3 s-notch-3 10 10 10
+leaf notch-3 notch-3 instanceof box
+assign-material notch-3 mat-turret-notch
+assign-texture notch-3 white
+
+add-child notch-3 s-notch-3
+add-child s-notch-3 t-notch-3
+add-child t-notch-3 roof
+
+#fourth notch
+translate t-notch-4 t-notch-4 -20 15 20
+scale s-notch-4 s-notch-4 10 10 10
+leaf notch-4 notch-4 instanceof box
+assign-material notch-4 mat-turret-notch
+assign-texture notch-4 white
+
+add-child notch-4 s-notch-4
+add-child s-notch-4 t-notch-4
+add-child t-notch-4 roof
+
+assign-root roof

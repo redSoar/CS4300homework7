@@ -1,0 +1,36 @@
+#all the instances
+instance cylinder models/cylinder.obj
+
+#materials
+material box-material
+emission 0 0 0
+ambient 0.3 0.3 0.3
+diffuse 0.8 0.8 0.8
+specular 0.8 0.8 0.8
+shininess 100
+end-material
+
+#lights
+light one-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 0 0 30
+end-light
+
+#textures
+image white textures/white.ppm
+
+#the root
+group root root
+assign-light one-light root
+
+scale b-scale b-scale 20 20 20
+leaf crate crate instanceof cylinder
+assign-material crate box-material
+assign-texture crate white
+
+
+add-child crate b-scale
+add-child b-scale root
+assign-root root
