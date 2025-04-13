@@ -34,7 +34,7 @@ namespace sgraph {
             string instance = leafNode->getInstanceOf();
             glm::mat4 currentModelView = modelview.top();
             glm::vec4 transformedOrigin = glm::inverse(currentModelView) * glm::vec4(ray.getPoint(), 1.0f);
-            glm::vec4 transformedDirection = glm::normalize(glm::inverse(currentModelView) * glm::vec4(ray.getDirection(), 0.0f));
+            glm::vec4 transformedDirection = glm::inverse(currentModelView) * glm::vec4(ray.getDirection(), 0.0f);
             
             if(instance == "box") {
                 checkForBoxIntersection(transformedOrigin, transformedDirection, leafNode->getMaterial());
@@ -101,7 +101,7 @@ namespace sgraph {
 
                 glm::vec3 normal = calculateNormalForBox(poi);
                 glm::vec4 viewNormal = glm::inverse(glm::transpose(modelview.top())) * glm::vec4(normal, 0.0f);
-
+                
                 if(minimum < 0.0f) {
                     return;
                 }

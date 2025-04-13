@@ -14,8 +14,6 @@ using namespace std;
 #include "Ray3D.h"
 #include "PPMImageLoader.h"
 
-int count = 0;
-
 View::View() {
 
 }
@@ -165,21 +163,13 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
             }
             int currentProgress = ((y * width + x) * 100) / (height * width);
             if (currentProgress >= (currentPrint + 1)) {
-                //printf("Loading: %d%%\r", currentProgress);
+                printf("Loading: %d%%\r", currentProgress);
                 currentPrint = currentProgress;
             }
         }
     }
-    cout << count << endl;
     cout << "Loading Complete" << endl;
     cout << "PPM Image has been created at root directory : output.ppm" << endl;
-    // for(int i = 0; i < height; i++) {
-    //     cout << endl;
-    //     for(int j = 0; j < width; j++) {
-    //         cout << image[i][j].x << " ";
-    //     }
-    // }
-
     // Draw image
     imageToPPM(image);
     modelview.pop();
@@ -224,10 +214,6 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
         Ray3D ray(s, d);
         sgraph::Scenegraph* sgraph = (dynamic_cast<sgraph::Scenegraph*>(scenegraph));
         HitRecord lightRec = sgraph->raycast(ray, modelview.top());
-        if(lightRec.getHit()) {
-            count++;
-            cout << lightRec.getTime() << endl;
-        }
         if(!(lightRec.getTime() > 0.0f && lightRec.getTime() < 1.0f)) {
             glm:: vec3 spotdirection= glm::vec3(0,0,0);
             if (glm::length(light[i].getSpotDirection())>0.01f){
@@ -261,9 +247,6 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
                 specular = glm::vec3(0,0,0);
             }
             fColor = fColor + glm::vec4(ambient+diffuse+specular,1.0);
-        }
-        else {
-            cout << "casting shadow" << endl;
         }
     }
     return glm::vec3(fColor);

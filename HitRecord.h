@@ -17,6 +17,7 @@ public:
 
     HitRecord() {
         hit = false;
+        t = -1.0f;
     }
 
     float getTime() {
