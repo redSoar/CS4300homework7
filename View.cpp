@@ -36,8 +36,8 @@ void View::init(Callbacks *callbacks,map<string,util::PolygonMesh<VertexAttrib>>
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    width = 100;
-    height = 100;
+    width = 800;
+    height = 800;
     fov = 60.0f;
 
 
@@ -155,11 +155,11 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
                 sgraph::LightGatherer * gatherer = new sgraph::LightGatherer(modelview);
                 scenegraph->getRoot()->accept(gatherer);
                 vector<util::Light> lightsInViewSpace = gatherer->getLightsInViewSpace();
-                image[x][y] = shade(hit, lightsInViewSpace, scenegraph);
+                image[x][y] = shade(hit, lightsInViewSpace, scenegraph, 0);
                 //image[x][y] = glm::vec3(hit.getMaterial().getAmbient().x, hit.getMaterial().getAmbient().y, hit.getMaterial().getAmbient().z);
             }
             else {
-                image[x][y] = glm::vec3(1, 1, 1);
+                image[x][y] = glm::vec3(0, 0, 0);
             }
             int currentProgress = ((y * width + x) * 100) / (height * width);
             if (currentProgress >= (currentPrint + 1)) {
@@ -199,20 +199,23 @@ void View::imageToPPM(const std::vector<std::vector<glm::vec3>>& image){
     }
 }
 
-glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScenegraph *scenegraph) {
+glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScenegraph *scenegraph, int bounce) {
     glm::vec4 fColor = glm::vec4(0,0,0,1);
+    glm::vec4 rColor = glm::vec4(0,0,0,1);
     int numLights = light.size();
     glm::vec3 lightVec,viewVec,reflectVec;
     glm::vec3 normalView;
     glm::vec3 ambient,diffuse,specular;
     float nDotL,rDotV;
+    sgraph::Scenegraph* sgraph = (dynamic_cast<sgraph::Scenegraph*>(scenegraph));
+    float reflection = hitrec.getMaterial().getReflection();
+    float absorption = hitrec.getMaterial().getAbsorption();
     for (int i=0;i<numLights;i++)
     {
         glm::vec3 s = hitrec.getIntersect();
         glm::vec3 d = glm::vec3(light[i].getPosition()) - hitrec.getIntersect();
         s = s + glm::normalize(d);
         Ray3D ray(s, d);
-        sgraph::Scenegraph* sgraph = (dynamic_cast<sgraph::Scenegraph*>(scenegraph));
         HitRecord lightRec = sgraph->raycast(ray, modelview.top());
         if(!(lightRec.getTime() > 0.0f && lightRec.getTime() < 1.0f)) {
             glm:: vec3 spotdirection= glm::vec3(0,0,0);
@@ -249,7 +252,17 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
             fColor = fColor + glm::vec4(ambient+diffuse+specular,1.0);
         }
     }
-    return glm::vec3(fColor);
+
+    if(reflection > 0.0f && bounce < 3) {
+        glm::vec3 s = hitrec.getIntersect();
+        glm::vec3 d = glm::normalize(glm::reflect(glm::normalize(hitrec.getIntersect()), glm::normalize(hitrec.getNormal())));
+        s = s + d;
+        Ray3D reflectRay(s, d);
+        HitRecord reflectRec = sgraph->raycast(reflectRay, modelview.top());
+        rColor = glm::vec4(shade(reflectRec, light, scenegraph, ++bounce), 1.0f);
+    }
+
+    return absorption * glm::vec3(fColor) + reflection * glm::vec3(rColor);
 }
 
 

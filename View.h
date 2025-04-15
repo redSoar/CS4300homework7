@@ -31,7 +31,7 @@ public:
     bool shouldWindowClose();
     void closeWindow();
     void imageToPPM(const std::vector<std::vector<glm::vec3>>& image);
-    glm::vec3 shade(HitRecord hitrec, vector<util::Light> lightsInViewSpace, sgraph::IScenegraph *scenegraph);
+    glm::vec3 shade(HitRecord hitrec, vector<util::Light> lightsInViewSpace, sgraph::IScenegraph *scenegraph, int bounce);
 
 
 private: 
