@@ -7,12 +7,13 @@
 class HitRecord 
 {
 public:
-    HitRecord(float time, glm::vec3 intersection, glm::vec3 normalVec, util::Material material) {
+    HitRecord(float time, glm::vec3 intersection, glm::vec3 normalVec, util::Material material, glm::vec4 texture) {
         t = time;
         hit = false;
         intersect = intersection;
         normal = normalVec;
         mat = material;
+        textureColor = texture;
     }
 
     HitRecord() {
@@ -59,6 +60,14 @@ public:
     void setMaterial(const util::Material& material) {
         mat = material;
     }
+
+    glm::vec4 getTextureColor() {
+        return textureColor;
+    }
+
+    void setTextureColor(glm::vec4 texture) {
+        textureColor = texture;
+    }
     
 private:
     float t;
@@ -66,6 +75,7 @@ private:
     glm::vec3 intersect;
     glm::vec3 normal;
     util::Material mat;
+    glm::vec4 textureColor;
 };
 
 #endif

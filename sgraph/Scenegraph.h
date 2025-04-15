@@ -120,7 +120,7 @@ namespace sgraph {
     HitRecord raycast(Ray3D ray, glm::mat4 mv){
       stack<glm::mat4> modelviews;
       modelviews.push(mv);
-      RayCastVisitor *rcv = new sgraph::RayCastVisitor(modelviews, ray);
+      RayCastVisitor *rcv = new sgraph::RayCastVisitor(modelviews, ray, getTextures());
       root->accept(rcv);
       return rcv->getHit();
     }

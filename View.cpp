@@ -150,7 +150,9 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
             glm::vec3 d = glm::vec3(Vx, Vy, Vz);
             Ray3D ray(s, d);
             sgraph::Scenegraph* sgraph = (dynamic_cast<sgraph::Scenegraph*>(scenegraph));
+            //cout << "preparing raycast" << endl;
             HitRecord hit = sgraph->raycast(ray, modelview.top());
+            //cout << "raycast complete" << endl;
             if(hit.getHit()) {
                 sgraph::LightGatherer * gatherer = new sgraph::LightGatherer(modelview);
                 scenegraph->getRoot()->accept(gatherer);
@@ -159,7 +161,7 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
                 //image[x][y] = glm::vec3(hit.getMaterial().getAmbient().x, hit.getMaterial().getAmbient().y, hit.getMaterial().getAmbient().z);
             }
             else {
-                image[x][y] = glm::vec3(0, 0, 0);
+                image[x][y] = glm::vec3(1, 1, 1);
             }
             int currentProgress = ((y * width + x) * 100) / (height * width);
             if (currentProgress >= (currentPrint + 1)) {
@@ -252,6 +254,7 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
             fColor = fColor + glm::vec4(ambient+diffuse+specular,1.0);
         }
     }
+    fColor = fColor * hitrec.getTextureColor();
 
     if(reflection > 0.0f && bounce < 3) {
         glm::vec3 s = hitrec.getIntersect();
@@ -259,7 +262,9 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
         s = s + d;
         Ray3D reflectRay(s, d);
         HitRecord reflectRec = sgraph->raycast(reflectRay, modelview.top());
-        rColor = glm::vec4(shade(reflectRec, light, scenegraph, ++bounce), 1.0f);
+        if(reflectRec.getHit()) {
+            rColor = glm::vec4(shade(reflectRec, light, scenegraph, ++bounce), 1.0f);
+        }
     }
 
     return absorption * glm::vec3(fColor) + reflection * glm::vec3(rColor);

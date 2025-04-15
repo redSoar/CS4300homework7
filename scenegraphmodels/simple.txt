@@ -9,8 +9,8 @@ ambient 0.3 0.3 0.3
 diffuse 0.8 0.8 0.8
 specular 0.8 0.8 0.8
 shininess 100
-reflection 0.5
-absorption 0.5
+reflection 0
+absorption 1
 transparency 0
 end-material
 
@@ -68,7 +68,7 @@ translate b-translate b-translate -10 0 0
 scale b-scale b-scale 10 10 10
 leaf one-box one-box instanceof box 
 assign-material one-box box-material
-assign-texture one-box white
+assign-texture one-box checkerboard
 
 add-child one-box b-scale
 add-child b-scale b-translate
