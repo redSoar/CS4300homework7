@@ -44,7 +44,7 @@ namespace sgraph {
                 checkForBoxIntersection(transformedOrigin, transformedDirection, leafNode->getMaterial(), leafNode->getTextureName());
             }
             else if(instance == "sphere") {
-                checkForSphereIntersection(transformedOrigin, transformedDirection, leafNode->getMaterial());
+                checkForSphereIntersection(transformedOrigin, transformedDirection, leafNode->getMaterial(), leafNode->getTextureName());
             }
             else if(instance == "cylinder") {
                 // checkForCylinderIntersection(transformedOrigin, transformedDirection, leafNode->getMaterial());
@@ -120,32 +120,32 @@ namespace sgraph {
                 if (normal == glm::vec3(1, 0, 0)) {
                     // Right
                     width = 0.5f + 0.25f * z;
-                    height = 0.25f + 0.25f * y;
+                    height = 0.5f + 0.25f * y;
                 }
                 else if (normal == glm::vec3(-1, 0, 0)) {
                     // Left
                     width = 0.25f - 0.25f * z;
-                    height = 0.25f + 0.25f * y;
+                    height = 0.5f + 0.25f * y;
                 }
                 else if (normal == glm::vec3(0, 1, 0)) {
                     // Top
                     width = 0.25f + 0.25f * x;
-                    height = 0.5f + 0.25f * z;
+                    height = 0.75f + 0.25f * z;
                 }
                 else if (normal == glm::vec3(0, -1, 0)) {
                     // Bottom
                     width = 0.25f + 0.25f * x;
-                    height = 0.25f - 0.25f * z;
+                    height = 0.5f - 0.25f * z;
                 }
                 else if (normal == glm::vec3(0, 0, 1)) {
                     // Back
                     width = 0.25f + 0.25f * x;
-                    height = 0.25f + 0.25f * y;
+                    height = 0.5f + 0.25f * y;
                 }
                 else if (normal == glm::vec3(0, 0, -1)) {
                     // Front
                     width = 1.0f - 0.25f * x;
-                    height = 0.25f + 0.25f * y;
+                    height = 0.5f + 0.25f * y;
                 }
                 textureColor = textures[textureName]->getColor(width, height);
 
@@ -165,7 +165,7 @@ namespace sgraph {
             }
         }
 
-        void checkForSphereIntersection(glm::vec3 s, glm::vec3 v, util::Material mat) {
+        void checkForSphereIntersection(glm::vec3 s, glm::vec3 v, util::Material mat, string textureName) {
             float A = glm::dot(v, v);
             float B = 2 * glm::dot(v, s);
             float C = glm::dot(s, s) - 1;
@@ -194,13 +194,25 @@ namespace sgraph {
                 if (t < 0.0f ) {
                     return;
                 }
+
+                glm::vec4 textureColor;
+                float width = 0.0f;
+                float height = 0.0f;
+                float PI = 3.1415927f;
+                width = (atan2(poi.z, poi.x) / (2.0f * PI));
+                height = (asin(poi.y) / PI) + 0.5f;
+                textureColor = textures[textureName]->getColor(1.0f - width, height);
+                textureColor.r /= 255.0f;
+                textureColor.g /= 255.0f;
+                textureColor.b /= 255.0f;
+
                 if (hit.getHit()) {
                     if (hit.getTime() > t) {
-                        editHit(t, viewPoi, viewNormal, mat, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+                        editHit(t, viewPoi, viewNormal, mat, textureColor);
                     }
                 } else {
                     hit.triggerHit();
-                    editHit(t, viewPoi, viewNormal, mat, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+                    editHit(t, viewPoi, viewNormal, mat, textureColor);
                 }
             }
         }
