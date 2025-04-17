@@ -26,7 +26,7 @@ void Controller::initScenegraph() {
      
     
     //read in the file of commands
-    ifstream inFile("scenegraphmodels/simple.txt");
+    ifstream inFile("scenegraphmodels/finalscene.txt");
     //ifstream inFile("tryout.txt");
     sgraph::ScenegraphImporter importer;
     
@@ -63,7 +63,7 @@ void Controller::run()
 
 void Controller::onkey(int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_S && action == GLFW_RELEASE) { // 's' or 'S'
+    if (key == GLFW_KEY_S && action == GLFW_RELEASE) { // 's' or 'S' for ray tracing.
         rayTraceMode = !rayTraceMode;
         count = 0;
     }

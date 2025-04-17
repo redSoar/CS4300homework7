@@ -20,7 +20,7 @@ using namespace std;
 
 namespace sgraph {
     /**
-     * This visitor implements a text rendering that includes the tabs and hyphens used to show levels, and prints the names of each node as shown.
+     * This visitor is used for our ray to traverse through the whole scenegraph and update the hitrecord.
      */
     class RayCastVisitor: public SGNodeVisitor {
         public:
@@ -87,6 +87,9 @@ namespace sgraph {
         int indentation = 3;
         map<string,util::TextureImage*> textures;
 
+        /**
+         * Calculating for box intersection and texture mapping and update hitrecord when necessary.
+         */
         void checkForBoxIntersection(glm::vec3 s, glm::vec3 v, util::Material mat, string textureName) {
             float minimums[3];
             float maximums[3];
@@ -165,6 +168,9 @@ namespace sgraph {
             }
         }
 
+        /**
+         * Calculating for sphere intersection and texture mapping and update hitrecord when necessary.
+         */
         void checkForSphereIntersection(glm::vec3 s, glm::vec3 v, util::Material mat, string textureName) {
             float A = glm::dot(v, v);
             float B = 2 * glm::dot(v, s);
@@ -256,6 +262,9 @@ namespace sgraph {
         //     }
         // }
 
+        /**
+         * Update hitrecord with given parameters
+         */
         void editHit(float time, glm::vec4 intersection, glm::vec4 normalVec, util::Material material, glm::vec4 textureColor) {
             hit.setTime(time);
             hit.setIntersect(glm::vec3(intersection.x, intersection.y, intersection.z));
@@ -264,6 +273,9 @@ namespace sgraph {
             hit.setTextureColor(textureColor);
         }
 
+        /**
+         * Calculating normal of the box with given point of intersection.
+         */
         glm::vec3 calculateNormalForBox(glm::vec3 poi) {
             const float epsilon = 1e-3f;
             if (fabs(poi.x - 0.5f) < epsilon) {

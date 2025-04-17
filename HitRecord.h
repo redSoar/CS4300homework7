@@ -4,6 +4,10 @@
 #include <glm/glm.hpp>
 #include "Material.h"
 
+/**
+ * This class implements a hit record to record information of the time of intersection, point of intersection, 
+ * normal of intersection, material attributes and the texture color of the hit by a ray.
+ */
 class HitRecord 
 {
 public:

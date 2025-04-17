@@ -36,12 +36,12 @@ void View::init(Callbacks *callbacks,map<string,util::PolygonMesh<VertexAttrib>>
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    width = 800;
+    width = 1200;
     height = 800;
     fov = 60.0f;
 
 
-    window = glfwCreateWindow(width, height, "Lights and Textures in a Scenegraph", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Solar System", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -131,10 +131,14 @@ void View::init(Callbacks *callbacks,map<string,util::PolygonMesh<VertexAttrib>>
     time = glfwGetTime();
 
     renderer = new sgraph::GLScenegraphRenderer(modelview,objects,textureIds,shaderLocations);
-    lookat = glm::lookAt(glm::vec3(0.0f,40.0f, 40.0f),glm::vec3(0.0f,0.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
+    lookat = glm::lookAt(glm::vec3(0.0f,85.0f, 150.0f),glm::vec3(0.0f,0.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
     
 }
 
+/**
+ * The main raytrace function to be called upon when S key is pressed.
+ * Sends a ray cast to traverse through the scenegraph to calculate the color of the pixel of the image to be made.
+ */
 void View::raytrace(sgraph::IScenegraph *scenegraph) {
     cout << "Processing Ray Trace" << endl;
     std::vector<std::vector<glm::vec3>> image(width, std::vector<glm::vec3>(height));
@@ -161,7 +165,7 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
                 //image[x][y] = glm::vec3(hit.getMaterial().getAmbient().x, hit.getMaterial().getAmbient().y, hit.getMaterial().getAmbient().z);
             }
             else {
-                image[x][y] = glm::vec3(1, 1, 1);
+                image[x][y] = glm::vec3(0, 0, 0);
             }
             int currentProgress = ((y * width + x) * 100) / (height * width);
             if (currentProgress >= (currentPrint + 1)) {
@@ -177,8 +181,9 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
     modelview.pop();
 }
 
-
-
+/**
+ * Converts array of rgb values to a ppm formated image.
+ */
 void View::imageToPPM(const std::vector<std::vector<glm::vec3>>& image){
     std::ofstream imageFile("output.ppm", std::ios::binary);
     if (imageFile.is_open()) {
@@ -201,6 +206,9 @@ void View::imageToPPM(const std::vector<std::vector<glm::vec3>>& image){
     }
 }
 
+/**
+ * Main function to calulate a color of a single pixel in regards to material color, lighting, texture and reflection
+ */
 glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScenegraph *scenegraph, int bounce) {
     glm::vec4 fColor = glm::vec4(0,0,0,1);
     glm::vec4 rColor = glm::vec4(0,0,0,1);
@@ -212,6 +220,9 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
     sgraph::Scenegraph* sgraph = (dynamic_cast<sgraph::Scenegraph*>(scenegraph));
     float reflection = hitrec.getMaterial().getReflection();
     float absorption = hitrec.getMaterial().getAbsorption();
+    /*
+    Loop for each light on scene
+    */
     for (int i=0;i<numLights;i++)
     {
         glm::vec3 s = hitrec.getIntersect();
@@ -219,6 +230,9 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
         s = s + glm::normalize(d);
         Ray3D ray(s, d);
         HitRecord lightRec = sgraph->raycast(ray, modelview.top());
+        /*
+        Only do light calculations when there is no object between the point of intersection of the pixel and the position of the current light.
+        */
         if(!(lightRec.getTime() > 0.0f && lightRec.getTime() < 1.0f)) {
             glm:: vec3 spotdirection= glm::vec3(0,0,0);
             if (glm::length(light[i].getSpotDirection())>0.01f){
@@ -256,6 +270,9 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
     }
     fColor = fColor * hitrec.getTextureColor();
 
+    /*
+    Calculate for reflections if object is reflective and limit to 3 bounces of reflection
+     */
     if(reflection > 0.0f && bounce < 3) {
         glm::vec3 s = hitrec.getIntersect();
         glm::vec3 d = glm::normalize(glm::reflect(glm::normalize(hitrec.getIntersect()), glm::normalize(hitrec.getNormal())));
@@ -274,7 +291,7 @@ glm::vec3 View::shade(HitRecord hitrec, vector<util::Light> light, sgraph::IScen
 void View::display(sgraph::IScenegraph *scenegraph) {
     
     program.enable();
-    glClearColor(1,1,1,1);
+    glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     //glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);

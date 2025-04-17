@@ -1,0 +1,386 @@
+#all the instances
+instance box models/box-outside.obj
+instance sphere models/sphere.obj
+
+#materials
+material box-material
+emission 0 0 0
+ambient 0.3 0.3 0.3
+diffuse 0.8 0.8 0.8
+specular 0.8 0.8 0.8
+shininess 0
+reflection 0
+absorption 1
+transparency 0
+end-material
+
+material box2-material
+emission 0 0 0
+ambient 0.3 0.3 0.3
+diffuse 0.8 0.8 0.8
+specular 0.8 0.8 0.8
+shininess 100
+reflection 0.5
+absorption 0.5
+transparency 0
+end-material
+
+material sphere-material
+emission 0 0 0
+ambient 1 1 1
+diffuse 1 1 1 
+specular 1 1 1
+shininess 50
+reflection 0
+absorption 1
+transparency 0
+end-material
+
+material wall-material
+emission 0 0 0
+ambient 1 1 1
+diffuse 1 1 1
+specular 1 1 1
+shininess 100
+reflection 0.5
+absorption 0.5
+transparency 0
+end-material
+
+#point light
+light one-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 0 50 -100
+end-light
+
+#spot light
+light one-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 0 50 -100
+end-light
+
+#textures
+image white textures/white.ppm
+image earthmap textures/earthmap.ppm
+image sun textures/sun.ppm
+image mercury textures/mercury.ppm
+image venus textures/venus.ppm
+image mars textures/mars.ppm
+image jupiter textures/jupiter.ppm
+image saturn textures/saturn.ppm
+image uranus textures/uranus.ppm
+image neptune textures/neptune.ppm
+image nightsky textures/nightsky.ppm
+
+#the root
+group root root
+
+
+#floor
+translate b2-translate b2-translate 0 -20 0
+scale b2-scale b2-scale 200 5 200
+leaf two-box two-box instanceof box 
+assign-material two-box box2-material
+assign-texture two-box nightsky
+
+add-child two-box b2-scale
+add-child b2-scale b2-translate
+add-child b2-translate root
+
+#sun box
+translate sun-translate sun-translate -60 0 80
+scale sun-scale sun-scale 15 25 15
+leaf sun-box sun-box instanceof box 
+assign-material sun-box box-material
+assign-texture sun-box white
+
+add-child sun-box sun-scale
+add-child sun-scale sun-translate
+add-child sun-translate root
+
+#sun
+translate sun-translate sun-translate -60 20 80
+scale sun-scale sun-scale 5 5 5
+leaf sun-sphere sun-sphere instanceof sphere 
+assign-material sun-sphere sphere-material
+assign-texture sun-sphere sun
+
+add-child sun-sphere sun-scale
+add-child sun-scale sun-translate
+add-child sun-translate root
+
+#sun light
+light sun-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position -60 70 80
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#mercury box
+translate mercury-translate mercury-translate -45 0 40
+scale mercury-scale mercury-scale 12 25 12
+leaf mercury-box mercury-box instanceof box 
+assign-material mercury-box box-material
+assign-texture mercury-box white
+
+add-child mercury-box mercury-scale
+add-child mercury-scale mercury-translate
+add-child mercury-translate root
+
+#mercury
+translate mercury-translate mercury-translate -45 20 40
+scale mercury-scale mercury-scale 5 5 5
+leaf mercury-sphere mercury-sphere instanceof sphere 
+assign-material mercury-sphere sphere-material
+assign-texture mercury-sphere mercury
+
+add-child mercury-sphere mercury-scale
+add-child mercury-scale mercury-translate
+add-child mercury-translate root
+
+#mercury light
+light mercury-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position -45 70 40
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#venus box
+translate venus-translate venus-translate -30 0 0
+scale venus-scale venus-scale 12 25 12
+leaf venus-box venus-box instanceof box 
+assign-material venus-box box-material
+assign-texture venus-box white
+
+add-child venus-box venus-scale
+add-child venus-scale venus-translate
+add-child venus-translate root
+
+#venus
+translate venus-translate venus-translate -30 20 0
+scale venus-scale venus-scale 5 5 5
+leaf venus-sphere venus-sphere instanceof sphere 
+assign-material venus-sphere sphere-material
+assign-texture venus-sphere venus
+
+add-child venus-sphere venus-scale
+add-child venus-scale venus-translate
+add-child venus-translate root
+
+#venus light
+light venus-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position -30 70 0
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#earth box
+translate earth-translate earth-translate -15 0 -40
+scale earth-scale earth-scale 12 25 12
+leaf earth-box earth-box instanceof box 
+assign-material earth-box box-material
+assign-texture earth-box white
+
+add-child earth-box earth-scale
+add-child earth-scale earth-translate
+add-child earth-translate root
+
+#earth
+translate earth-translate earth-translate -15 20 -40
+scale earth-scale earth-scale 5 5 5
+leaf earth-sphere earth-sphere instanceof sphere 
+assign-material earth-sphere sphere-material
+assign-texture earth-sphere earthmap
+
+add-child earth-sphere earth-scale
+add-child earth-scale earth-translate
+add-child earth-translate root
+
+#earth light
+light earth-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position -15 70 -40
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#mars box
+translate mars-translate mars-translate 0 0 -80
+scale mars-scale mars-scale 12 25 12
+leaf mars-box mars-box instanceof box 
+assign-material mars-box box-material
+assign-texture mars-box white
+
+add-child mars-box mars-scale
+add-child mars-scale mars-translate
+add-child mars-translate root
+
+#mars
+translate mars-translate mars-translate 0 20 -80
+scale mars-scale mars-scale 5 5 5
+leaf mars-sphere mars-sphere instanceof sphere 
+assign-material mars-sphere sphere-material
+assign-texture mars-sphere mars
+
+add-child mars-sphere mars-scale
+add-child mars-scale mars-translate
+add-child mars-translate root
+
+#mars light
+light mars-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 0 70 -80
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#jupiter box
+translate jupiter-translate jupiter-translate 15 0 -40
+scale jupiter-scale jupiter-scale 12 25 12
+leaf jupiter-box jupiter-box instanceof box 
+assign-material jupiter-box box-material
+assign-texture jupiter-box white
+
+add-child jupiter-box jupiter-scale
+add-child jupiter-scale jupiter-translate
+add-child jupiter-translate root
+
+#jupiter
+translate jupiter-translate jupiter-translate 15 20 -40
+scale jupiter-scale jupiter-scale 5 5 5
+leaf jupiter-sphere jupiter-sphere instanceof sphere 
+assign-material jupiter-sphere sphere-material
+assign-texture jupiter-sphere jupiter
+
+add-child jupiter-sphere jupiter-scale
+add-child jupiter-scale jupiter-translate
+add-child jupiter-translate root
+
+#jupiter light
+light jupiter-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 15 70 -40
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#saturn box
+translate saturn-translate saturn-translate 30 0 0
+scale saturn-scale saturn-scale 12 25 12
+leaf saturn-box saturn-box instanceof box 
+assign-material saturn-box box-material
+assign-texture saturn-box white
+
+add-child saturn-box saturn-scale
+add-child saturn-scale saturn-translate
+add-child saturn-translate root
+
+#saturn
+translate saturn-translate saturn-translate 30 20 0
+scale saturn-scale saturn-scale 5 5 5
+leaf saturn-sphere saturn-sphere instanceof sphere 
+assign-material saturn-sphere sphere-material
+assign-texture saturn-sphere saturn
+
+add-child saturn-sphere saturn-scale
+add-child saturn-scale saturn-translate
+add-child saturn-translate root
+
+#saturn light
+light saturn-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 30 70 0
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#uranus box
+translate uranus-translate uranus-translate 45 0 40
+scale uranus-scale uranus-scale 12 25 12
+leaf uranus-box uranus-box instanceof box 
+assign-material uranus-box box-material
+assign-texture uranus-box white
+
+add-child uranus-box uranus-scale
+add-child uranus-scale uranus-translate
+add-child uranus-translate root
+
+#uranus
+translate uranus-translate uranus-translate 45 20 40
+scale uranus-scale uranus-scale 5 5 5
+leaf uranus-sphere uranus-sphere instanceof sphere 
+assign-material uranus-sphere sphere-material
+assign-texture uranus-sphere uranus
+
+add-child uranus-sphere uranus-scale
+add-child uranus-scale uranus-translate
+add-child uranus-translate root
+
+#uranus light
+light uranus-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 45 70 40
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+#neptune box
+translate neptune-translate neptune-translate 60 0 80
+scale neptune-scale neptune-scale 12 25 12
+leaf neptune-box neptune-box instanceof box 
+assign-material neptune-box box-material
+assign-texture neptune-box white
+
+add-child neptune-box neptune-scale
+add-child neptune-scale neptune-translate
+add-child neptune-translate root
+
+#neptune
+translate neptune-translate neptune-translate 60 20 80
+scale neptune-scale neptune-scale 5 5 5
+leaf neptune-sphere neptune-sphere instanceof sphere 
+assign-material neptune-sphere sphere-material
+assign-texture neptune-sphere neptune
+
+add-child neptune-sphere neptune-scale
+add-child neptune-scale neptune-translate
+add-child neptune-translate root
+
+#neptune light
+light neptune-light
+ambient 0.3 0.3 0.3
+diffuse 0.5 0.5 0.5
+specular 0.5 0.5 0.5
+position 60 70 80
+spot-direction 0 -1 0 
+spot-angle 10
+end-light
+
+assign-light one-light root
+
+
+assign-root root
+
